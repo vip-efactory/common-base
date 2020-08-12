@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  vip.efactory.common.i18n.config.LocaleConfig,\
+  vip.efactory.common.base.config.EjpaAutoConfiguration,\
+  vip.efactory.common.base.config.TenantConfig,\
+  vip.efactory.common.i18n.enums.ErrorCodeUtil
