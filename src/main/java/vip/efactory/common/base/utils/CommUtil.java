@@ -391,6 +391,152 @@ public class CommUtil {
         return urls;
     }
 
+    /**
+     * 分割驼峰字段
+     *
+     * @param name
+     * @param separator
+     * @return
+     */
+    private static String separateCamelCase(String name, String separator) {
+        StringBuilder translation = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char character = name.charAt(i);
+            if (Character.isUpperCase(character) && translation.length() != 0) {
+                translation.append(separator);
+            }
+            translation.append(character);
+        }
+        return translation.toString();
+    }
+
+    /**
+     * 下划线转换为驼峰
+     */
+    public static String underscore2CamelCase(String name) {
+        StringBuilder translation = new StringBuilder();
+        for (int i = 0; i < name.length(); i++) {
+            char character = name.charAt(i);
+            if (character == '_')
+                continue;
+            if (translation.length() != 0 && name.charAt(i - 1) == '_') {
+                translation.append(Character.toUpperCase(character));
+            } else {
+                translation.append(character);
+            }
+        }
+        return translation.toString();
+    }
+
+    /**
+     * 驼峰转换为下划线
+     *
+     * @param name
+     * @return
+     */
+    public static String camelCase2Underscore(String name) {
+        return separateCamelCase(name, "_").toLowerCase();
+    }
+
+    /**
+     * 首字母大写
+     *
+     * @param name
+     * @return
+     */
+    public static String upperCaseFirstLetter(String name) {
+        StringBuilder fieldNameBuilder = new StringBuilder();
+        int index = 0;
+        char firstCharacter = name.charAt(index);
+        while (index < name.length() - 1) {
+            if (Character.isLetter(firstCharacter)) {
+                break;
+            }
+
+            fieldNameBuilder.append(firstCharacter);
+            firstCharacter = name.charAt(++index);
+        }
+
+        if (index == name.length()) {
+            return fieldNameBuilder.toString();
+        }
+
+        if (!Character.isUpperCase(firstCharacter)) {
+            String modifiedTarget = modifyString(Character.toUpperCase(firstCharacter), name, ++index);
+            return fieldNameBuilder.append(modifiedTarget).toString();
+        } else {
+            return name;
+        }
+    }
+
+    /**
+     * 首字母小写
+     *
+     * @param name
+     * @return
+     */
+    public static String lowerCaseFirstLetter(String name) {
+        StringBuilder fieldNameBuilder = new StringBuilder();
+        int index = 0;
+        char firstCharacter = name.charAt(index);
+        while (index < name.length() - 1) {
+            if (Character.isLetter(firstCharacter)) {
+                break;
+            }
+
+            fieldNameBuilder.append(firstCharacter);
+            firstCharacter = name.charAt(++index);
+        }
+
+        if (index == name.length()) {
+            return fieldNameBuilder.toString();
+        }
+
+        if (!Character.isLowerCase(firstCharacter)) {
+            String modifiedTarget = modifyString(Character.toLowerCase(firstCharacter), name, ++index);
+            return fieldNameBuilder.append(modifiedTarget).toString();
+        } else {
+            return name;
+        }
+    }
+
+    /**
+     * 修改字符串
+     *
+     * @param firstCharacter
+     * @param srcString
+     * @param indexOfSubstring
+     * @return String
+     */
+    private static String modifyString(char firstCharacter, String srcString, int indexOfSubstring) {
+        return (indexOfSubstring < srcString.length())
+                ? firstCharacter + srcString.substring(indexOfSubstring)
+                : String.valueOf(firstCharacter);
+    }
+
+    /**
+     * Description:生成随机字符创,由数字大小写字母组成
+     * length指定生成字符串的长度
+     *
+     * @param [length]
+     * @return java.lang.String
+     * @author dbdu
+     */
+    public static String randomString(int length) {
+        // 允许的字符,删除小写L和大写的i易混字符
+        String ku = "0123456789ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        // 定义一个StringBuilder用以保存生成的字符串，这里不选用String和StringBuffer（String长度不可变，StringBuffer没有StringBuilder快）
+        StringBuilder sb = new StringBuilder();
+        // 创建一个Random用以生成伪随机数，也可采用Math.random()来实现
+        Random r = new Random();
+        for (int i = 0; i < length; i++) {
+            // 得到随机字符
+            int r2 = r.nextInt(ku.length());
+            sb.append(ku.charAt(r2));
+        }
+
+        return sb.toString();
+    }
 
     public static void main(String[] args) {
         Integer result = compareVersion("3.0.1", "3.0.1");

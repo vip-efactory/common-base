@@ -54,8 +54,12 @@ public class R<T> implements Serializable {
         return genr(data, CommonEnum.SUCCESS);
     }
 
-    // 使用此方法会导致，msg信息无法国际化，慎重使用！
-    @Deprecated
+    /**
+     * 使用此方法会导致，msg信息就是硬编码了,无法国际化，慎重使用！
+     * @param data 数据
+     * @param msg 附加信息
+     * @return {@link R<T>}
+     */
     public static <T> R<T> ok(T data, String msg) {
         return genr(data, CommonEnum.SUCCESS.getErrorCode(), msg);
     }
@@ -65,7 +69,11 @@ public class R<T> implements Serializable {
         return genr(CommonEnum.ERROR);
     }
 
-    @Deprecated
+    /**
+    * Description: 使用此方法会导致，msg信息就是硬编码了,无法国际化，慎重使用！
+    * @param msg
+    * @return {@link R<T>}
+    */
     public static <T> R<T> error(String msg) {
         return genr(null, CommonEnum.ERROR.getErrorCode(), msg);
     }
@@ -75,12 +83,24 @@ public class R<T> implements Serializable {
         return genr(null, CommonEnum.ERROR.getErrorCode(), e.getMessage());
     }
 
-    @Deprecated
+
+    /**
+    * Description: 使用此方法会导致，msg信息就是硬编码了,无法国际化，慎重使用！
+    * @param code 手动设置的错误码
+    * @param msg 错误信息
+    * @return {@link R<T>}
+    */
     public static <T> R<T> error(int code, String msg) {
         return genr(null, code, msg);
     }
 
-    @Deprecated
+    /**
+     * Description: 使用此方法会导致，msg信息就是硬编码了,无法国际化，慎重使用！
+     * @param code 手动设置的错误码
+     * @param data 返回的数据
+     * @param msg 错误信息
+     * @return {@link R<T>}
+     */
     public static <T> R<T> error(int code, T data, String msg) {
         return genr(data, code, msg);
     }
