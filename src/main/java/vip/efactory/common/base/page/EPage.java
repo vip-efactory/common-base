@@ -15,7 +15,7 @@ public class EPage implements Serializable {
     /**
      * 页面索引，即，当前页
      */
-    private int pageIndex;
+    private long pageIndex;
     /**
      * 记录总数
      */
@@ -23,11 +23,11 @@ public class EPage implements Serializable {
     /**
      * 每页元素数
      */
-    private int pageSize;
+    private long pageSize;
     /**
      * 总页数
      */
-    private int totalPage;
+    private long totalPage;
     /**
      * 记录集合
      */
@@ -44,7 +44,7 @@ public class EPage implements Serializable {
         this.pageSize = page.getSize();
     }
 
-    public EPage(int pageIndex, long totalCount, int pageSize, int totalPage, List<?> content) {
+    public EPage(long pageIndex, long totalCount, long pageSize, long totalPage, List<?> content) {
         this.pageIndex = pageIndex;
         this.totalCount = totalCount;
         this.pageSize = pageSize;
@@ -60,7 +60,7 @@ public class EPage implements Serializable {
         return new EPage(page);
     }
 
-    public static EPage page(int pageIndex, long totalCount, int pageSize, int totalPage, List<?> content) {
+    public static EPage page(long pageIndex, long totalCount, long pageSize, long totalPage, List<?> content) {
         return new EPage(pageIndex, totalCount, pageSize, totalPage, content);
     }
 
