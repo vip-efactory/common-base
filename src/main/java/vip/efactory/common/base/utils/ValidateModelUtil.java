@@ -69,7 +69,7 @@ public class ValidateModelUtil {
                 // 替换message里的占位符
                 for (String key : keys) {
                     String value = localeMessageSourceService.getMessage(key);
-                    if (null == value || value.equals(key)) {
+                    if (StringUtils.isEmpty(value) || value.equals(key)) {
                         value = key;
                         log.warn("missing key [{}]", key);
                     }
