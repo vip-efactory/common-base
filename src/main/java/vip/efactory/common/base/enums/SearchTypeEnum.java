@@ -18,19 +18,29 @@ public enum SearchTypeEnum {
     LE(5, "小于等于查询"),
     GT(6, "大于查询"),
     GE(7, "大于等于查询"),
-    IS_NULL(8, "Null值查询"),       // 3.0+
-    NOT_NULL(9, "非Null值查询"),    // 3.0+
-    LEFT_LIKE(10, "左模糊查询"),    // 3.0+
-    RIGHT_LIKE(11, "右模糊查询"),   // 3.0+
-    IN(12, "包含查询"),             // 3.4+ ,内置暂不支持not in查询！除非手写hql或sql实现
-    NOT_IN(13, "不包含查询"),        // mbp支持,jpa内置暂不支持not in查询！除非手写hql或sql实现，
+    // 3.0+ 开始
+    IS_NULL(8, "Null值查询"),
+    // 3.0+
+    NOT_NULL(9, "非Null值查询"),
+    // 3.0+
+    LEFT_LIKE(10, "左模糊查询"),
+    // 3.0+
+    RIGHT_LIKE(11, "右模糊查询"),
+    // 3.4+ ,内置暂不支持not in查询！除非手写hql或sql实现
+    IN(12, "包含查询"),
+    // mbp支持,jpa内置暂不支持not in查询！除非手写hql或sql实现，
+    NOT_IN(13, "不包含查询"),
     ;
 
-    // 枚举值
-    private int value;
+    /**
+     * 枚举值
+     */
+    private final int value;
 
-    //枚举说明
-    private String desc;
+    /**
+     * 枚举说明
+     */
+    private final String desc;
 
     SearchTypeEnum(int value, String desc) {
         this.value = value;
@@ -39,8 +49,9 @@ public enum SearchTypeEnum {
 
     /**
      * 这个方法目前没有用到
-     * @param value
-     * @return
+     *
+     * @param value 类型值
+     * @return SearchTypeEnum
      */
     public static SearchTypeEnum getByValue(int value) {
         switch (value) {
@@ -68,6 +79,8 @@ public enum SearchTypeEnum {
                 return RIGHT_LIKE;
             case 12:
                 return IN;
+            case 13:
+                return NOT_IN;
             default:
                 // 0 或其他情况,则为模糊查询
                 return FUZZY;
