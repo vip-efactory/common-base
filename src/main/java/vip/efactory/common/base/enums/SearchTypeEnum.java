@@ -23,6 +23,7 @@ public enum SearchTypeEnum {
     LEFT_LIKE(10, "左模糊查询"),    // 3.0+
     RIGHT_LIKE(11, "右模糊查询"),   // 3.0+
     IN(12, "包含查询"),             // 3.4+ ,内置暂不支持not in查询！除非手写hql或sql实现
+    NOT_IN(13, "不包含查询"),        // mbp支持,jpa内置暂不支持not in查询！除非手写hql或sql实现，
     ;
 
     // 枚举值
