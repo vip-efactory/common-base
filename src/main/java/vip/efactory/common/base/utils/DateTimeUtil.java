@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -238,52 +241,8 @@ public abstract class DateTimeUtil {
     public static Date getDateFromString(String dateString) {
         if (!CommUtil.isEmptyString(dateString)) {
             String pattern = "";
-            if (dateString.length() == 19) { // 全格式的
-                if (dateString.indexOf("/") > 0) {
-                    pattern = "yyyy/MM/dd HH:mm:ss";
-                } else if (dateString.indexOf("_") > 0) {
-                    pattern = "yyyy_MM_dd HH:mm:ss";
-                } else if (dateString.indexOf("-") > 0) {
-                    pattern = "yyyy-MM-dd HH:mm:ss";
-                }
-            } else if (dateString.length() == 17) { // 年月日不带分隔符的全格式
-                pattern = "yyyyMMdd HH:mm:ss";
-            } else if (dateString.length() == 16) { // 不带秒的全格式
-                if (dateString.indexOf("/") > 0) {
-                    pattern = "yyyy/MM/dd HH:mm";
-                } else if (dateString.indexOf("_") > 0) {
-                    pattern = "yyyy_MM_dd HH:mm";
-                } else if (dateString.indexOf("-") > 0) {
-                    pattern = "yyyy-MM-dd HH:mm";
-                }
-            } else if (dateString.length() == 15) { // 不带带分隔符的年月日格式及时分秒不带冒号
-                pattern = "yyyyMMdd HHmmss";
-            } else if (dateString.length() == 14) { // 不带带分隔符的年月日格式及时分
-                pattern = "yyyyMMdd HH:mm";
-            } else if (dateString.length() == 13) { // 不带带分隔符的年月日格式及时分
-                pattern = "yyyyMMdd HHmm";
-            } else if (dateString.length() == 10) { // 带分隔符的年月日格式
-                if (dateString.indexOf("/") > 0) {
-                    pattern = "yyyy/MM/dd";
-                } else if (dateString.indexOf("_") > 0) {
-                    pattern = "yyyy_MM_dd";
-                } else if (dateString.indexOf("-") > 0) {
-                    pattern = "yyyy-MM-dd";
-                }
-            } else if (dateString.length() == 8) { // 不带分隔符的年月日格式或者时分秒的格式
-                if (dateString.indexOf(":") > 0) {
-                    pattern = "HH:mm:ss";
-                } else {
-                    pattern = "yyyyMMdd";
-                }
-            } else if (dateString.length() == 5) {  // 仅仅时分的格式
-                if (dateString.indexOf(":") > 0) {
-                    pattern = "HH:mm";
-                }
-            } else {
-                log.warn("未知的日期格式:" + dateString);
-            }
-
+            pattern = getPatternFromDateString(dateString);
+            assert pattern != null;
             DateFormat df = new SimpleDateFormat(pattern);
             Date date;
             try {
@@ -294,6 +253,155 @@ public abstract class DateTimeUtil {
             }
 
             return date;
+        }
+        return null;
+    }
+
+    /**
+     * 从常见的时间日期字符串中提取日期的格式，以便进行日期类型的格式化
+     * 对日期的字符串解析为时间类型！支持格式:
+     * "yyyy/MM/dd"及"yyyy/MM/dd HH:mm"及"yyyy/MM/dd HH:mm:ss"
+     * "yyyy_MM_dd"及"yyyy_MM_dd HH:mm"及yyyy_MM_dd HH:mm:ss"
+     * "yyyy-MM-dd"及"yyyy-MM-dd HH:mm"及"yyyy-MM-dd HH:mm:ss"
+     * "yyyyMMdd"及"yyyyMMdd HH:mm"及"yyyyMMdd HH:mm:ss"
+     * "yyyyMMdd HHmmss"及"yyyyMMdd HHmm"
+     * "HH:mm"及"HH:mm:ss"
+     *
+     * @param dateString 时间字符串
+     * @return pattern 风格字符串
+     */
+    private static String getPatternFromDateString(String dateString) {
+        if (CommUtil.isEmptyString(dateString)) {
+            return null;
+        }
+        String pattern = null;
+        if (dateString.length() == 19) { // 全格式的
+            if (dateString.indexOf("/") > 0) {
+                pattern = "yyyy/MM/dd HH:mm:ss";
+            } else if (dateString.indexOf("_") > 0) {
+                pattern = "yyyy_MM_dd HH:mm:ss";
+            } else if (dateString.indexOf("-") > 0) {
+                pattern = "yyyy-MM-dd HH:mm:ss";
+            }
+        } else if (dateString.length() == 17) { // 年月日不带分隔符的全格式
+            pattern = "yyyyMMdd HH:mm:ss";
+        } else if (dateString.length() == 16) { // 不带秒的全格式
+            if (dateString.indexOf("/") > 0) {
+                pattern = "yyyy/MM/dd HH:mm";
+            } else if (dateString.indexOf("_") > 0) {
+                pattern = "yyyy_MM_dd HH:mm";
+            } else if (dateString.indexOf("-") > 0) {
+                pattern = "yyyy-MM-dd HH:mm";
+            }
+        } else if (dateString.length() == 15) { // 不带带分隔符的年月日格式及时分秒不带冒号
+            pattern = "yyyyMMdd HHmmss";
+        } else if (dateString.length() == 14) { // 不带带分隔符的年月日格式及时分
+            pattern = "yyyyMMdd HH:mm";
+        } else if (dateString.length() == 13) { // 不带带分隔符的年月日格式及时分
+            pattern = "yyyyMMdd HHmm";
+        } else if (dateString.length() == 10) { // 带分隔符的年月日格式
+            if (dateString.indexOf("/") > 0) {
+                pattern = "yyyy/MM/dd";
+            } else if (dateString.indexOf("_") > 0) {
+                pattern = "yyyy_MM_dd";
+            } else if (dateString.indexOf("-") > 0) {
+                pattern = "yyyy-MM-dd";
+            }
+        } else if (dateString.length() == 8) { // 不带分隔符的年月日格式或者时分秒的格式
+            if (dateString.indexOf(":") > 0) {
+                pattern = "HH:mm:ss";
+            } else {
+                pattern = "yyyyMMdd";
+            }
+        } else if (dateString.length() == 5) {  // 仅仅时分的格式
+            if (dateString.indexOf(":") > 0) {
+                pattern = "HH:mm";
+            }
+        } else {
+            log.warn("未知的日期格式:" + dateString);
+        }
+        return pattern;
+    }
+
+    /**
+     * 对日期的字符串解析为LocalDateTime类型！支持格式:
+     * "yyyy/MM/dd HH:mm"及"yyyy/MM/dd HH:mm:ss"
+     * "yyyy_MM_dd HH:mm"及yyyy_MM_dd HH:mm:ss"
+     * "yyyy-MM-dd HH:mm"及"yyyy-MM-dd HH:mm:ss"
+     * "yyyyMMdd HH:mm"及"yyyyMMdd HH:mm:ss"
+     * "yyyyMMdd HHmmss"
+     * ISO_LOCAL_DATE_TIME,例如:2011-12-03T10:15:30 DateTimeFormatter.ISO_LOCAL_DATE_TIME
+     *
+     * @param dateString 日期格式的字符串
+     * @return LocalDateTime java8的日期时间格式
+     */
+    public static LocalDateTime getLocalDateTimeFromString(String dateString) {
+        if (!CommUtil.isEmptyString(dateString)) {
+            if (dateString.contains("T") && dateString.length() == 19) {
+                // 说明是标准的ISO_LOCAL_DATE_TIME格式
+                return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+            } else if (!dateString.contains("T") && dateString.length() >= 13 && dateString.length() <= 19) {
+                // 含有年月日十分秒的格式
+                String pattern = getPatternFromDateString(dateString);
+                assert pattern != null;
+                return LocalDateTime.parse(dateString, DateTimeFormatter.ofPattern(pattern));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 对日期的字符串解析为LocalDate类型！支持格式:
+     * "yyyy/MM/dd"及"yyyy/MM/dd HH:mm"及"yyyy/MM/dd HH:mm:ss"
+     * "yyyy_MM_dd"及"yyyy_MM_dd HH:mm"及yyyy_MM_dd HH:mm:ss"
+     * "yyyy-MM-dd"及"yyyy-MM-dd HH:mm"及"yyyy-MM-dd HH:mm:ss"
+     * "yyyyMMdd"及"yyyyMMdd HH:mm"及"yyyyMMdd HH:mm:ss"
+     * "yyyyMMdd HHmmss"及"yyyyMMdd HHmm"
+     * ISO_LOCAL_DATE_TIME,例如:2011-12-03T10:15:30 DateTimeFormatter.ISO_LOCAL_DATE_TIME
+     *
+     * @param dateString 日期格式的字符串
+     * @return LocalDate java8的日期时间格式
+     */
+    public static LocalDate getLocalDateFromString(String dateString) {
+        if (!CommUtil.isEmptyString(dateString)) {
+            // 含有年月日时分秒的格式
+            if (dateString.length() >= 13 && dateString.length() <= 19) {
+                // 说明是标准的ISO_LOCAL_DATE_TIME格式
+                return Objects.requireNonNull(getLocalDateTimeFromString(dateString)).toLocalDate();
+            } else if (dateString.length() >= 8 && dateString.length() <= 10 && !dateString.contains(":")) {
+                // 仅日期，不含时分秒的格式
+                String pattern = getPatternFromDateString(dateString);
+                assert pattern != null;
+                return LocalDate.parse(dateString, DateTimeFormatter.ofPattern(pattern));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 对日期的字符串解析为LocalTime类型！支持格式:
+     * "yyyy/MM/dd HH:mm"及"yyyy/MM/dd HH:mm:ss"
+     * "yyyy_MM_dd HH:mm"及yyyy_MM_dd HH:mm:ss"
+     * "yyyy-MM-dd HH:mm"及"yyyy-MM-dd HH:mm:ss"
+     * "yyyyMMdd HH:mm"及"yyyyMMdd HH:mm:ss"
+     * "yyyyMMdd HHmmss"及"yyyyMMdd HHmm"
+     * "HH:mm"及"HH:mm:ss"
+     * ISO_LOCAL_DATE_TIME,例如:2011-12-03T10:15:30 DateTimeFormatter.ISO_LOCAL_DATE_TIME
+     *
+     * @param dateString 日期格式的字符串
+     * @return LocalTime java8的日期时间格式
+     */
+    public static LocalTime getLocalTimeFromString(String dateString) {
+        if (!CommUtil.isEmptyString(dateString)) {
+            // 含有年月日时分秒的格式
+            if (dateString.length() >= 13 && dateString.length() <= 19) {
+                return Objects.requireNonNull(getLocalDateTimeFromString(dateString)).toLocalTime();
+            } else if (dateString.length() <= 8 && dateString.contains(":")) {
+                // "HH:mm"及"HH:mm:ss"
+                String pattern = getPatternFromDateString(dateString);
+                assert pattern != null;
+                return LocalTime.parse(dateString, DateTimeFormatter.ofPattern(pattern));
+            }
         }
         return null;
     }
@@ -1594,31 +1702,33 @@ public abstract class DateTimeUtil {
     }
 
     public static void main(String[] args) throws ParseException {
-//        Date date = toDateWithoutSecond("2017-01-25 08:30");
-//        String s = "2018-04-30 08:30:30";
-//        String e = "2018-04-01 08:30:30";
-//        System.out.println(isSameMonth(formatterYMDHMS.parse(s), formatterYMDHMS.parse(e)));
-        //System.out.println(getDateString(date, 6));
-//        DateTimeUtil.toDate("1970-01-01");
-//        DateTimeUtil.toSqlDateTime("1970-01-01");
-//        String val1 = DateTimeUtil.getDateString(new Date(), 0);
-//        String val2 = DateTimeUtil.getDateString(Long.valueOf("1463386947012"), 0);
-//        System.out.println("G20:" + DateTimeUtil.getDateString(Long.valueOf("1463386947012"), 1));
-//        System.out.println(val1 + " : " + val2);
-
-        System.out.println("DateTimeUtil.getCurDateStr():" + DateTimeUtil.getCurDateStr());
-        System.out.println("DateTimeUtil.getCurrentDate():" + DateTimeUtil.getCurrentDate());
-
-        System.out.println("DateTimeUtil.getTimeFromString( DateTimeUtil.getCurrentDate()):" + DateTimeUtil.getTimeFromString(DateTimeUtil.getCurrentDate() + " 00:00:00"));
-        System.out.println("DateTimeUtil.getTimeMSFromString( DateTimeUtil.getCurrentDate()):" + DateTimeUtil.getTimeMSFromString(DateTimeUtil.getCurrentDate() + " 00:00:00"));
-        System.out.println("DateTimeUtil.getTimeMSFromString( DateTimeUtil.getCurrentDate()):" + DateTimeUtil.getTimeMSFromString(DateTimeUtil.getCurrentDate() + " 23:59:59"));
-
-        System.out.println(DateTimeUtil.getDateString(DateTimeUtil.getTimeMSFromString(DateTimeUtil.getCurrentDate() + " 00:00:00")));
-        System.out.println(DateTimeUtil.getDateString(DateTimeUtil.getTimeMSFromString(DateTimeUtil.getCurrentDate() + " 23:59:59")));
-
-        System.out.println("DateTimeUtil.getDateString(getTodayStart()):" + DateTimeUtil.getDateString(getTodayStart()));
-        System.out.println("DateTimeUtil.getDateString(getTodayEnd()):" + DateTimeUtil.getDateString(getTodayEnd() + 1));
-        System.out.println(DateTimeUtil.getTodayEnd() + 1);
-
+        String fullT = "2018-04-30T08:30:30";
+        String full1 = "2018-04-30 08:30:30";
+        String full2 = "2018/04/30 08:30:30";
+        String full3 = "2018_04_30 08:30";
+        String full4 = "20180430 083030";
+        System.out.println(full1 + "====getDateFromString ===" + getDateFromString(full1));
+        System.out.println(full2 + "====getDateFromString ===" + getDateFromString(full2));
+        System.out.println(full3 + "====getDateFromString ===" + getDateFromString(full3));
+        System.out.println(full4 + "====getDateFromString ===" + getDateFromString(full4));
+        System.out.println(fullT + "getLocalDateTimeFromString ===" + getLocalDateTimeFromString(fullT));
+        System.out.println(full1 + "====getLocalDateTimeFromString ===" + getLocalDateTimeFromString(full1));
+        System.out.println(full2 + "====getLocalDateTimeFromString ===" + getLocalDateTimeFromString(full2));
+        System.out.println(full3 + "====getLocalDateTimeFromString ===" + getLocalDateTimeFromString(full3));
+        System.out.println(full4 + "====getLocalDateTimeFromString ===" + getLocalDateTimeFromString(full4));
+        System.out.println("getLocalTimeFromString ===" + getLocalDateTimeFromString(full4).toLocalTime());
+        System.out.println("getLocalDateFromString ===" + getLocalDateTimeFromString(full4).toLocalDate());
+        String date1 = "2018-04-30";
+        String date2 = "2018/04/30";
+        String date3 = "2018_04_30";
+        String date4 = "20180430";
+        System.out.println("getLocalDateFromString ===" + getLocalDateFromString(date1));
+        System.out.println("getLocalDateFromString ===" + getLocalDateFromString(date2));
+        System.out.println("getLocalDateFromString ===" + getLocalDateFromString(date3));
+        System.out.println("getLocalDateFromString ===" + getLocalDateFromString(date4));
+        String time1 = "10:25:22";
+        String time2 = "10:26";
+        System.out.println("getLocalTimeFromString ==="+getLocalTimeFromString(time1));
+        System.out.println("getLocalTimeFromString ==="+getLocalTimeFromString(time2));
     }
 }
