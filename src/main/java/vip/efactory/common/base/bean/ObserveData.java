@@ -1,6 +1,9 @@
 package vip.efactory.common.base.bean;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * Description: 这个类是缓存一致性维护时使用，
@@ -10,7 +13,10 @@ import lombok.Data;
  * @Author dbdu
  * @Date 2020-09-06
  */
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ObserveData {
     /**
      * 哪个类更新了,例如：User
@@ -31,4 +37,12 @@ public class ObserveData {
      */
     private String data;
 
+    @Override
+    public String toString() {
+        return "ObserveData{" +
+                "className='" + className + '\'' +
+                ", operType=" + operType +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }
