@@ -20,6 +20,7 @@ public class ObserveData {
 
     /**
      * 操作的类型是什么，例如：增--1;改--2;删--3
+     * 参看：OperateTypeEnum
      */
     private Integer operType;
 
