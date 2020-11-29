@@ -21,6 +21,7 @@
         <swagger-starter.version>1.9.0.RELEASE</swagger-starter.version>
         <qiniu.version>7.4.0</qiniu.version>
         <aliyun.oss.version>3.11.1</aliyun.oss.version>
+        <qcloud.cos.version>5.6.32</qcloud.cos.version>
     </properties>
 
     <dependencies>
@@ -84,6 +85,18 @@
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
             <version>${aliyun.oss.version}</version>
+        </dependency>
+        <!-- com.qcloud:cos_api:5.6.32 -->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>${qcloud.cos.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
