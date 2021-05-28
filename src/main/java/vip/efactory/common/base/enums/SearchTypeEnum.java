@@ -30,6 +30,8 @@ public enum SearchTypeEnum {
     IN(12, "包含查询"),
     // mbp支持,jpa内置暂不支持not in查询！除非手写hql或sql实现，
     NOT_IN(13, "不包含查询"),
+    IS_EMPTY_STRING(14, "是空串"),
+    NOT_EMPTY_STRING(15, "非空串"),
     ;
 
     /**
@@ -80,7 +82,12 @@ public enum SearchTypeEnum {
             case 12:
                 return IN;
             case 13:
+                // ejpa 不支持
                 return NOT_IN;
+            case 14:
+                return IS_EMPTY_STRING;
+            case 15:
+                return NOT_EMPTY_STRING;
             default:
                 // 0 或其他情况,则为模糊查询
                 return FUZZY;
