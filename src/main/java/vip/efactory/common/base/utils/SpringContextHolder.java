@@ -67,7 +67,6 @@ public class SpringContextHolder implements ApplicationContextAware, DisposableB
         BeanDefinitionRegistry beanRegistry = (BeanDefinitionRegistry) applicationContext.getAutowireCapableBeanFactory();
         try {
             beanRegistry.getBeanDefinition(beanName);
-            return;
         } catch (Exception e) {
             GenericBeanDefinition definition = new GenericBeanDefinition();
             definition.setBeanClass(beanClass);

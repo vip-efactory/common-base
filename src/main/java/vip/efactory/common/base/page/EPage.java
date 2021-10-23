@@ -9,6 +9,7 @@ import java.util.Map;
 
 /**
  * EPage,意为ejpa的Page，用途是简化jpa的原始分页对象传输到前端！
+ * @author dusuanyun
  */
 @Data
 public class EPage implements Serializable {

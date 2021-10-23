@@ -35,11 +35,11 @@ public class SQLFilter {
 
         //判断是否包含非法字符
         for (String keyword : keywords) {
-            if (sql.indexOf(keyword) != -1) {
-                return true;  //包含非法字符
+            if (sql.contains(keyword)) {
+                //包含非法字符
+                return true;
             }
         }
-
         return false;
     }
 }

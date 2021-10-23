@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public enum SearchTypeEnum {
+    //
     FUZZY(0, "模糊查询"),
     EQ(1, "等于查询"),
     RANGE(2, "范围查询"),
@@ -92,7 +93,5 @@ public enum SearchTypeEnum {
                 // 0 或其他情况,则为模糊查询
                 return FUZZY;
         }
-
     }
-
 }

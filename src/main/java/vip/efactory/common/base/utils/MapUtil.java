@@ -33,7 +33,7 @@ import java.util.Map;
  * by dbdu
  */
 public class MapUtil {
-    private static Logger logger = LoggerFactory.getLogger(MapUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(MapUtil.class);
 
     /**
      * Description:使用org.apache.commons.beanutils进行转换

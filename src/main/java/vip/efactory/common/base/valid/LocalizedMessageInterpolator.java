@@ -5,10 +5,11 @@ import java.util.Locale;
 
 /**
  * 国际化的实体属性注解的消息解析器，使用hiberbnate-validator默认的资源文件
+ * @author dusuanyun
  */
 public class LocalizedMessageInterpolator implements MessageInterpolator {
-    private MessageInterpolator defaultInterpolator;
-    private Locale defaultLocale;
+    private final MessageInterpolator defaultInterpolator;
+    private final Locale defaultLocale;
 
     public LocalizedMessageInterpolator(MessageInterpolator interpolator, Locale locale) {
         this.defaultLocale = locale;

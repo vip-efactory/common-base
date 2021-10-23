@@ -11,15 +11,16 @@ import lombok.Getter;
  */
 @Getter
 public enum ConditionRelationEnum {
+    //
     NOT(-1, "非关系--条件取反"),
     OR(0, "或关系--满足任一条件"),
     AND(1, "与关系--所有条件满足");
 
     // 枚举值
-    private int value;
+    private final int value;
 
     //枚举说明
-    private String desc;
+    private final String desc;
 
     ConditionRelationEnum(int value, String desc) {
         this.value = value;

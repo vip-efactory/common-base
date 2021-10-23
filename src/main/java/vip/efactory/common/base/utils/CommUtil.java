@@ -19,10 +19,7 @@ public class CommUtil {
      * @return
      */
     public static boolean isNull(String string) {
-        if (string == null || "".equals(string)) {
-            return true;
-        }
-        return false;
+        return string == null || "".equals(string);
     }
 
     /**
@@ -57,6 +54,7 @@ public class CommUtil {
             for (Object object : list) {
                 if (null != object) {
                     allNull = false;
+                    break;
                 }
             }
             return allNull;
@@ -195,8 +193,6 @@ public class CommUtil {
             return false;
         }
         int i = 0;
-        if ((length > 1) && (chars[0] == '-')) {
-        }
         for (i = 1; i < length; i++) {
             if (!Character.isDigit(chars[i])) {
                 return false;

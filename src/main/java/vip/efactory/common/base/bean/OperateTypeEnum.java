@@ -10,6 +10,7 @@ import lombok.Getter;
  */
 @Getter
 public enum OperateTypeEnum {
+    //
     SAVE(1, "增加类操作"),
     UPDATE(2, "修改类操作"),
     DELETE(3, "删除类操作"),
@@ -23,10 +24,10 @@ public enum OperateTypeEnum {
     /**
      * 类型的编码
      */
-    private Integer code;
+    private final Integer code;
 
     /**
      * 类型的描述
      */
-    private String desc;
+    private final String desc;
 }
